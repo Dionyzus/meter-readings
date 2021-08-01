@@ -17,15 +17,15 @@ public class MeterReadingDataLoader {
 	private static final String DATA_SOURCE = "static/meter_readings.json";
 
 	@Bean
-	public CommandLineRunner loadCatalogItemData(MeterRepository meterReadingRepository) {
+	public CommandLineRunner loadCatalogItemData(MeterRepository meterRepository) {
 
 		URL resource = Thread.currentThread().getContextClassLoader().getResource(DATA_SOURCE);
 
-		final List<MeterEntity> catalogItems = Deserialization.deserialize(resource, MeterEntity.class);
+		final List<MeterEntity> meterReadings = Deserialization.deserialize(resource, MeterEntity.class);
 
 		return (args) -> {
-			//To initialize db with some data
-			//meterReadingRepository.saveAll(catalogItems);
+//			//To initialize db with some data
+//			meterRepository.saveAll(meterReadings);
 		};
 	}
 }

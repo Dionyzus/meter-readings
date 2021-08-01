@@ -43,8 +43,8 @@ public class MeterController {
 
 	@RequestMapping(value = "/meter-readings", method = RequestMethod.GET, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<Page<MeterEntity>> getMeterReadings(@RequestParam HashMap<String, String> queryParams)
-			throws BadRequestException {
+	public ResponseEntity<Page<MeterEntity>> getMeterReadings(
+			@RequestParam(required = false) HashMap<String, String> queryParams) throws BadRequestException {
 
 		Page<MeterEntity> meterReadings = meterService.query(queryParams);
 
@@ -53,7 +53,7 @@ public class MeterController {
 
 	@RequestMapping(value = "/meter-readings/{id}", method = RequestMethod.GET, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ResponseEntity<MeterEntity> getMeterReadingById(@PathVariable(value = "id") String meterReadingId)
+	public ResponseEntity<MeterEntity> getMeterReadingById(@PathVariable(value = "id") Long meterReadingId)
 			throws ResourceNotFoundException {
 
 		MeterEntity meterEntity = meterService.getMeterReadingById(meterReadingId);
@@ -64,7 +64,7 @@ public class MeterController {
 	@RequestMapping(value = "/meter-readings/{id}", method = RequestMethod.PUT, produces = {
 			"application/json" }, consumes = "application/json")
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ResponseEntity<MeterEntity> updateMeterReading(@PathVariable(value = "id") String meterEntityId,
+	public ResponseEntity<MeterEntity> updateMeterReading(@PathVariable(value = "id") Long meterEntityId,
 			@RequestBody MeterEntity meterEntityDetails) throws ResourceNotFoundException {
 
 		MeterEntity meterEntity = meterService.update(meterEntityId, meterEntityDetails);
@@ -74,7 +74,7 @@ public class MeterController {
 
 	@RequestMapping(value = "/meter-readings/{id}", method = RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ResponseEntity<MeterEntity> deleteMeterReading(@PathVariable(value = "id") String meterEntityId)
+	public ResponseEntity<MeterEntity> deleteMeterReading(@PathVariable(value = "id") Long meterEntityId)
 			throws ResourceNotFoundException {
 
 		meterService.delete(meterEntityId);

@@ -1,6 +1,7 @@
 package com.odak.meterreading.entity;
 
 import java.sql.Date;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
