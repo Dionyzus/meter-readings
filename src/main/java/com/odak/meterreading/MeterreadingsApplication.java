@@ -1,4 +1,4 @@
-package com.odak.meterreadings;
+package com.odak.meterreading;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
