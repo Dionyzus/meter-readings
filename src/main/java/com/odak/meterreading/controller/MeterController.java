@@ -10,26 +10,26 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.odak.meterreading.entity.MeterReadingEntity;
+import com.odak.meterreading.entity.MeterEntity;
 import com.odak.meterreading.exception.BadRequestException;
-import com.odak.meterreading.service.MeterReadingService;
+import com.odak.meterreading.service.MeterService;
 
 @Controller
 @RequestMapping("api/v1")
-public class MeterReadingController {
+public class MeterController {
 
-	private MeterReadingService meterReadingService;
+	private MeterService meterService;
 
 	@Autowired
-	public MeterReadingController(MeterReadingService meterReadingService) {
-		this.meterReadingService = meterReadingService;
+	public MeterController(MeterService meterService) {
+		this.meterService = meterService;
 	}
 
-	@GetMapping("/catalog-items")
-	public ResponseEntity<Page<MeterReadingEntity>> getCatalogItems(@RequestParam HashMap<String, String> queryParams)
+	@GetMapping("/meter-readings")
+	public ResponseEntity<Page<MeterEntity>> getCatalogItems(@RequestParam HashMap<String, String> queryParams)
 			throws BadRequestException {
 
-		Page<MeterReadingEntity> meterReadings = meterReadingService.query(queryParams);
+		Page<MeterEntity> meterReadings = meterService.query(queryParams);
 
 		return ResponseEntity.ok(meterReadings);
 	}
