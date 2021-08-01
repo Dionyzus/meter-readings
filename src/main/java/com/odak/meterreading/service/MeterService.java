@@ -31,4 +31,19 @@ public class MeterService {
 		return meterReadingRepository.findAll(pageable);
 	}
 
+	public MeterEntity getMeterReadingById(String meterReadingId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public MeterEntity update(String meterEntityId, MeterEntity meterEntityDetails) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void delete(String meterEntityId) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
