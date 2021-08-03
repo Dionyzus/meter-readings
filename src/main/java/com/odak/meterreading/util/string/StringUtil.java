@@ -24,4 +24,21 @@ public class StringUtil {
 		}
 		return false;
 	}
+
+	/**
+	 * Gets integer value from string.
+	 *
+	 * @param value        - String value representing number.
+	 * @param defaultValue - default value if parsing fails.
+	 * @return Integer value of a provided string, default value otherwise.
+	 */
+	public static Integer tryParseInteger(String value, Integer defaultValue) {
+		try {
+			return Integer.parseInt(value);
+		} catch (NumberFormatException exception) {
+			// Missing logger
+			return defaultValue;
+		}
+	}
+
 }
