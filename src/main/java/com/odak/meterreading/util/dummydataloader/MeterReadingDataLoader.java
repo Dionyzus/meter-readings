@@ -24,8 +24,8 @@ public class MeterReadingDataLoader {
 		final List<MeterEntity> meterReadings = Deserialization.deserialize(resource, MeterEntity.class);
 
 		return (args) -> {
-//			//To initialize db with some data
-//			meterRepository.saveAll(meterReadings);
+			//To initialize db with some data
+			////meterRepository.saveAll(meterReadings);
 		};
 	}
 }

@@ -40,5 +40,4 @@ public class StringUtil {
 			return defaultValue;
 		}
 	}
-
 }

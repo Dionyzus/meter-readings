@@ -1,8 +1,10 @@
 package com.odak.meterreading.service;
 
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +18,7 @@ import com.odak.meterreading.helper.query.builder.QueryBuilderImpl;
 import com.odak.meterreading.helper.query.builder.QueryBuilderImpl.QueryConfiguration;
 import com.odak.meterreading.helper.query.operation.MeterReadingOperation;
 import com.odak.meterreading.helper.query.operation.MeterReadingOperationFactory;
+import com.odak.meterreading.model.MeterDto;
 import com.odak.meterreading.repository.MeterRepository;
 import com.odak.meterreading.repository.QueryResult;
 import com.odak.meterreading.util.string.StringUtil;
@@ -35,15 +38,28 @@ public class MeterService {
 		this.meterRepository = meterRepository;
 	}
 
-	public MeterEntity create(MeterEntity meterReadingEntity) {
+	public MeterEntity create(MeterDto meterDto) {
 
-		Optional<MeterEntity> meterEntity = meterRepository.findById(meterReadingEntity.getId());
+		MeterEntity meterEntity = convertToEntity(meterDto);
 
-		if (meterEntity.isPresent()) {
-			throw new BadRequestException("Record with given id already exists: " + meterReadingEntity.getId());
+		validateEntry(meterEntity);
+
+		return meterRepository.save(meterEntity);
+	}
+
+	private MeterEntity convertToEntity(MeterDto meterDto) {
+		ModelMapper modelMapper = new ModelMapper();
+
+		MeterEntity meterEntity = modelMapper.map(meterDto, MeterEntity.class);
+
+		try {
+			meterEntity.setReadingTime(meterDto.convertReadingDate());
+		} catch (DateTimeParseException exception) {
+			throw new BadRequestException(
+					"Provided data is not valid, missing year or month. Usage: eg. year: 2021, month: 07, reading_value: 50.5");
 		}
 
-		return meterRepository.save(meterReadingEntity);
+		return meterEntity;
 	}
 
 	public QueryConfiguration buildQuery(HashMap<String, String> queryParams) {
@@ -96,18 +112,31 @@ public class MeterService {
 				.orElseThrow(() -> new ResourceNotFoundException(EXCEPTION_MESSAGE + meterReadingId));
 	}
 
-	public MeterEntity update(Long meterEntityId, MeterEntity meterEntityDetails) {
+	public MeterEntity update(Long meterEntityId, MeterDto meterReadingDetails) {
 		MeterEntity meterEntity = meterRepository.findById(meterEntityId)
 				.orElseThrow(() -> new ResourceNotFoundException(EXCEPTION_MESSAGE + meterEntityId));
+		
+		MeterEntity updatedMeterReading = convertToEntity(meterReadingDetails);
 
-		return updateEntity(meterEntity, meterEntityDetails);
+		return updateEntity(meterEntity, updatedMeterReading);
 	}
 
 	private MeterEntity updateEntity(MeterEntity meterEntity, MeterEntity meterEntityDetails) {
 		meterEntity.setReadingValue(meterEntityDetails.getReadingValue());
 		meterEntity.setReadingTime(meterEntityDetails.getReadingTime());
 
+		validateEntry(meterEntity);
+		
 		return meterRepository.save(meterEntity);
+	}
+
+	private void validateEntry(MeterEntity meterEntity) {
+		Optional<MeterEntity> existingEntity = meterRepository.findByReadingTime(meterEntity.getReadingTime());
+
+		if (existingEntity.isPresent()) {
+			//This could be 409 conflict as well
+			throw new BadRequestException("Reading for the date already exists: " + meterEntity.getReadingTime());
+		}
 	}
 
 	public void delete(Long meterEntityId) {

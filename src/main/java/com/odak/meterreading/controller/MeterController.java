@@ -19,6 +19,7 @@ import com.odak.meterreading.entity.MeterEntity;
 import com.odak.meterreading.exception.BadRequestException;
 import com.odak.meterreading.exception.ResourceNotFoundException;
 import com.odak.meterreading.helper.query.builder.QueryBuilderImpl.QueryConfiguration;
+import com.odak.meterreading.model.MeterDto;
 import com.odak.meterreading.service.MeterService;
 import com.odak.meterreading.util.string.StringUtil;
 
@@ -36,9 +37,9 @@ public class MeterController {
 	@RequestMapping(value = "/meter-readings", method = RequestMethod.POST, produces = {
 			"application/json" }, consumes = "application/json")
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<MeterEntity> addMeterReading(@Validated @RequestBody MeterEntity meterEntityDetails) {
+	public ResponseEntity<MeterEntity> addMeterReading(@Validated @RequestBody MeterDto meterReadingDetails) {
 
-		MeterEntity meterEntity = meterService.create(meterEntityDetails);
+		MeterEntity meterEntity = meterService.create(meterReadingDetails);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(meterEntity);
 	}
@@ -49,7 +50,7 @@ public class MeterController {
 			throws BadRequestException {
 
 		QueryConfiguration query = meterService.buildQuery(queryParams);
-		
+
 		if (!StringUtil.isNullOrEmpty(query.type)) {
 			return ResponseEntity.ok(meterService.query(query));
 		}
@@ -70,7 +71,7 @@ public class MeterController {
 			"application/json" }, consumes = "application/json")
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ResponseEntity<MeterEntity> updateMeterReading(@PathVariable(value = "id") Long meterEntityId,
-			@RequestBody MeterEntity meterEntityDetails) throws ResourceNotFoundException {
+			@RequestBody MeterDto meterEntityDetails) throws ResourceNotFoundException {
 
 		MeterEntity meterEntity = meterService.update(meterEntityId, meterEntityDetails);
 
