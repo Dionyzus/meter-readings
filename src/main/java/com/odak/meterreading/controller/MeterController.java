@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.odak.meterreading.entity.MeterEntity;
 import com.odak.meterreading.exception.BadRequestException;
 import com.odak.meterreading.exception.ResourceNotFoundException;
+import com.odak.meterreading.repository.QueryResult;
 import com.odak.meterreading.service.MeterService;
 
 @RestController
@@ -43,12 +44,15 @@ public class MeterController {
 
 	@RequestMapping(value = "/meter-readings", method = RequestMethod.GET, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<Page<MeterEntity>> getMeterReadings(
+	public ResponseEntity<Page<?>> getMeterReadings(
 			@RequestParam(required = false) HashMap<String, String> queryParams) throws BadRequestException {
 
-		Page<MeterEntity> meterReadings = meterService.query(queryParams);
+		if(queryParams.isEmpty()) {
+			return ResponseEntity.ok(meterService.query(queryParams));
+		}
+		Page<QueryResult> queryResult = meterService.meh(queryParams);
 
-		return ResponseEntity.ok(meterReadings);
+		return ResponseEntity.ok(queryResult);
 	}
 
 	@RequestMapping(value = "/meter-readings/{id}", method = RequestMethod.GET, produces = { "application/json" })

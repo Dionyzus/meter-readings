@@ -1,12 +1,12 @@
-package com.odak.meterreading.helper;
+package com.odak.meterreading.helper.query.operation;
 
-public enum ViewReadingType {
+public enum QueryReadingType {
 
 	AGGREGATED("aggr"), YEARLY("yearly"), MONTHLY("monthly");
 
 	private final String value;
 
-	ViewReadingType(final String value) {
+	QueryReadingType(final String value) {
 		this.value = value;
 	}
 

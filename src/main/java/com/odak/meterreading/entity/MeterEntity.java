@@ -1,8 +1,8 @@
 package com.odak.meterreading.entity;
 
 import java.sql.Date;
-import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,13 +26,16 @@ public class MeterEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JsonProperty("id")
+	@Column(name = "id")
 	private Long id;
 
 	@NotNull(message = "The reading value is required.")
 	@JsonProperty("reading_value")
+	@Column(name = "reading_value")
 	private Double readingValue;
 
 	@NotNull(message = "The reading time is required.")
 	@JsonProperty("reading_time")
+	@Column(name = "reading_time")
 	private Date readingTime;
 }

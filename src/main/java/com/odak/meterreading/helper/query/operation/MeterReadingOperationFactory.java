@@ -1,4 +1,4 @@
-package com.odak.meterreading.helper;
+package com.odak.meterreading.helper.query.operation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,9 +8,9 @@ public class MeterReadingOperationFactory {
 
 	static Map<String, MeterReadingOperation> operationMap = new HashMap<>();
 	static {
-		operationMap.put(ViewReadingType.AGGREGATED.toString(), new AggregatedYearlyReading());
-		operationMap.put(ViewReadingType.YEARLY.toString(), new ReadingPerYear());
-		operationMap.put(ViewReadingType.MONTHLY.toString(), new MonthInYearReading());
+		operationMap.put(QueryReadingType.AGGREGATED.toString(), new AggregatedReading());
+		operationMap.put(QueryReadingType.YEARLY.toString(), new YearlyReading());
+		operationMap.put(QueryReadingType.MONTHLY.toString(), new MonthlyReading());
 	}
 
 	public static Optional<MeterReadingOperation> getOperation(String operator) {
