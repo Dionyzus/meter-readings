@@ -15,7 +15,19 @@ public class Deserialization {
 		throw new UnsupportedOperationException("Utils class instantiation not allowed.");
 	}
 
-	public static <T> List<T> deserialize(URL resource, Class<T> target) {
+	public static <T> T deserialize(URL resource, Class<T> target) {
+
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		try {
+			return objectMapper.readValue(resource,
+					objectMapper.getTypeFactory().constructType(Class.forName(target.getName())));
+		} catch (IOException | ClassNotFoundException e) {
+			throw new DeserializationException(EXCEPTION_MESSAGE, e);
+		}
+	}
+
+	public static <T> List<T> deserializeToList(URL resource, Class<T> target) {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 

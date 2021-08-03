@@ -7,8 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.odak.meterreading.exception.BadRequestException;
-import com.odak.meterreading.repository.MeterRepository;
-import com.odak.meterreading.repository.QueryResult;
+import com.odak.meterreading.repository.meter.MeterRepository;
+import com.odak.meterreading.repository.meter.QueryResult;
 
 public class MonthlyReading implements MeterReadingOperation {
 

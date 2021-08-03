@@ -1,4 +1,4 @@
-package com.odak.meterreading.repository;
+package com.odak.meterreading.repository.meter;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

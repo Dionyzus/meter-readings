@@ -19,8 +19,8 @@ import com.odak.meterreading.helper.query.builder.QueryBuilderImpl.QueryConfigur
 import com.odak.meterreading.helper.query.operation.MeterReadingOperation;
 import com.odak.meterreading.helper.query.operation.MeterReadingOperationFactory;
 import com.odak.meterreading.model.MeterDto;
-import com.odak.meterreading.repository.MeterRepository;
-import com.odak.meterreading.repository.QueryResult;
+import com.odak.meterreading.repository.meter.MeterRepository;
+import com.odak.meterreading.repository.meter.QueryResult;
 import com.odak.meterreading.util.string.StringUtil;
 
 public class MeterService {
@@ -53,7 +53,7 @@ public class MeterService {
 		MeterEntity meterEntity = modelMapper.map(meterDto, MeterEntity.class);
 
 		try {
-			meterEntity.setReadingTime(meterDto.convertReadingDate());
+			meterEntity.setReadingTime(meterDto.convertToLocalDate());
 		} catch (DateTimeParseException exception) {
 			throw new BadRequestException(
 					"Provided data is not valid, missing year or month. Usage: eg. year: 2021, month: 07, reading_value: 50.5");
@@ -115,7 +115,7 @@ public class MeterService {
 	public MeterEntity update(Long meterEntityId, MeterDto meterReadingDetails) {
 		MeterEntity meterEntity = meterRepository.findById(meterEntityId)
 				.orElseThrow(() -> new ResourceNotFoundException(EXCEPTION_MESSAGE + meterEntityId));
-		
+
 		MeterEntity updatedMeterReading = convertToEntity(meterReadingDetails);
 
 		return updateEntity(meterEntity, updatedMeterReading);
@@ -126,17 +126,8 @@ public class MeterService {
 		meterEntity.setReadingTime(meterEntityDetails.getReadingTime());
 
 		validateEntry(meterEntity);
-		
+
 		return meterRepository.save(meterEntity);
-	}
-
-	private void validateEntry(MeterEntity meterEntity) {
-		Optional<MeterEntity> existingEntity = meterRepository.findByReadingTime(meterEntity.getReadingTime());
-
-		if (existingEntity.isPresent()) {
-			//This could be 409 conflict as well
-			throw new BadRequestException("Reading for the date already exists: " + meterEntity.getReadingTime());
-		}
 	}
 
 	public void delete(Long meterEntityId) {
@@ -144,5 +135,14 @@ public class MeterService {
 				.orElseThrow(() -> new ResourceNotFoundException(EXCEPTION_MESSAGE + meterEntityId));
 
 		meterRepository.delete(meterEntity);
+	}
+
+	private void validateEntry(MeterEntity meterEntity) {
+		Optional<MeterEntity> existingEntity = meterRepository.findByReadingTime(meterEntity.getReadingTime());
+
+		if (existingEntity.isPresent()) {
+			// This could be 409 conflict as well
+			throw new BadRequestException("Reading for the date already exists: " + meterEntity.getReadingTime());
+		}
 	}
 }

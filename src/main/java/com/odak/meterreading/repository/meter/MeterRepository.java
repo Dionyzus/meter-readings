@@ -1,4 +1,4 @@
-package com.odak.meterreading.repository;
+package com.odak.meterreading.repository.meter;
 
 import java.time.LocalDate;
 import java.util.Optional;

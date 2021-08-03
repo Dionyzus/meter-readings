@@ -9,17 +9,22 @@ import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Data;
 
 @Data
+@JsonInclude(Include.NON_NULL)
 public class ApiError {
 
 	private HttpStatus status;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
 	private LocalDateTime timestamp;
 	private String message;
-	private List<ApiValidationError> errors;
+	private String localizedMessage;
+	private List<String> errors;
+	private List<ApiValidationError> validationErrors;
 
 	private ApiError() {
 		timestamp = LocalDateTime.now();
@@ -42,11 +47,23 @@ public class ApiError {
 		this.message = message;
 	}
 
+	public ApiError(HttpStatus status, String localizedMessage, List<String> errors) {
+		this.status = status;
+		this.localizedMessage = localizedMessage;
+		this.errors = errors;
+	}
+
+	public ApiError(HttpStatus status, String localizedMessage, String message) {
+		this.status = status;
+		this.localizedMessage = localizedMessage;
+		this.message = message;
+	}
+
 	private void addSubError(ApiValidationError error) {
-		if (errors == null) {
-			errors = new ArrayList<>();
+		if (validationErrors == null) {
+			validationErrors = new ArrayList<>();
 		}
-		errors.add(error);
+		validationErrors.add(error);
 	}
 
 	public void addValidationError(List<ObjectError> globalErrors) {

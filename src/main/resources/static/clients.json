@@ -1,0 +1,9 @@
+{
+	"full_name": "Ivan Odak",
+	"address": {
+		"street_name": "Some street",
+		"city": "In the City",
+		"postal_code": "21000"
+	},
+	"device_id": 109
+}

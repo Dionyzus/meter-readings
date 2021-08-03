@@ -36,7 +36,6 @@ public class StringUtil {
 		try {
 			return Integer.parseInt(value);
 		} catch (NumberFormatException exception) {
-			// Missing logger
 			return defaultValue;
 		}
 	}

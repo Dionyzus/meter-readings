@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -17,13 +19,16 @@ import lombok.Data;
 public class MeterDto {
 
 	@JsonProperty("year")
+	@NotNull(message = "Year value is required.")
 	private String year;
 	@JsonProperty("month")
+	@NotNull(message = "Month value is required.")
 	private String month;
 	@JsonProperty("reading_value")
+	@NotNull(message = "The reading value is required.")
 	private Double readingValue;
 
-	public LocalDate convertReadingDate() throws DateTimeParseException {
+	public LocalDate convertToLocalDate() throws DateTimeParseException {
 
 		StringBuilder date = new StringBuilder("01");
 		date.append("-");
