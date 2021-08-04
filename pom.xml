@@ -17,6 +17,9 @@
 	<properties>
 		<java.version>11</java.version>
 		<spock.version>1.2-groovy-2.4</spock.version>
+		<flyway.user>root</flyway.user>
+		<flyway.password>iodak</flyway.password>
+		<flyway.url>jdbc:mysql://localhost:3306/electric_device</flyway.url>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -79,10 +82,10 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 
-		<!-- <dependency> -->
-		<!-- <groupId>org.flywaydb</groupId> -->
-		<!-- <artifactId>flyway-core</artifactId> -->
-		<!-- </dependency> -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.validation</groupId>
