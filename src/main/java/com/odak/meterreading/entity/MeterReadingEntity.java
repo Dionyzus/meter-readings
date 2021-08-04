@@ -26,12 +26,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entity describing meter-reading.
+ * @author ivano
+ *
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "meter")
-public class MeterEntity {
+public class MeterReadingEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -43,7 +48,7 @@ public class MeterEntity {
 	@JsonProperty("device")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "device_id", nullable = false)
-	@JsonIgnoreProperties("meter_collection")
+	@JsonIgnoreProperties("meter_reading_collection")
 	private DeviceEntity device;
 
 	@JsonProperty("reading_value")

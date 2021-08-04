@@ -25,6 +25,13 @@ import com.odak.meterreading.model.ApiError;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * Custom exception handler which handles request exceptions and validation
+ * errors.
+ *
+ * @author ivano
+ *
+ */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 @Slf4j
@@ -42,6 +49,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return buildResponseEntity(apiError);
 	}
 
+	/**
+	 * Handles transaction system exception.
+	 *
+	 * @param exception - {@link TransactionSystemException} instance.
+	 * @return - {@link ResponseEntity} containing additional error data.
+	 */
 	@ExceptionHandler({ TransactionSystemException.class })
 	protected ResponseEntity<Object> handlePersistenceException(final Exception ex, final WebRequest request) {
 
@@ -64,6 +77,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return buildResponseEntity(apiError);
 	}
 
+	/**
+	 * Handles data integrity validation exception.
+	 *
+	 * @param exception - {@link DataIntegrityViolationException} instance.
+	 * @return - {@link ResponseEntity} containing additional error data.
+	 */
 	@ExceptionHandler({ DataIntegrityViolationException.class })
 	protected ResponseEntity<Object> handlePersistenceException(final DataIntegrityViolationException ex) {
 
@@ -83,6 +102,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return buildResponseEntity(apiError);
 	}
 
+	/**
+	 * Handles resource not found exception.
+	 *
+	 * @param exception - {@link ResourceNotFoundException} instance.
+	 * @return - {@link ResponseEntity} containing additional error data.
+	 */
 	@ExceptionHandler(ResourceNotFoundException.class)
 	protected ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException exception) {
 		ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
@@ -90,6 +115,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 		return buildResponseEntity(apiError);
 	}
 
+	/**
+	 * Handles bad request exception.
+	 *
+	 * @param exception - {@link BadRequestException} instance.
+	 * @return - {@link ResponseEntity} containing additional error data.
+	 */
 	@ExceptionHandler(BadRequestException.class)
 	protected ResponseEntity<Object> handleMissingCategoryBadRequest(BadRequestException exception) {
 		ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST);

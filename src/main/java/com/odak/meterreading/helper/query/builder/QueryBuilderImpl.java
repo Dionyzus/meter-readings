@@ -68,17 +68,35 @@ public class QueryBuilderImpl implements QueryBuilder {
 		private static final Integer DEFAULT_RECORDS_LIMIT = 5;
 		private static final Integer DEFAULT_PAGE_OFFSET = 0;
 
+		/**
+		 * Query type value.
+		 */
 		@With(AccessLevel.PRIVATE)
 		public final String type;
+		/**
+		 * Value to query collection with.
+		 */
 		@With(AccessLevel.PRIVATE)
 		public final String value;
+		/**
+		 * Limit of page content.
+		 */
 		@With(AccessLevel.PRIVATE)
 		public final Integer limit;
+		/**
+		 * Page offset with zero index convention.
+		 */
 		@With(AccessLevel.PRIVATE)
 		public final Integer offset;
 		@With(AccessLevel.PRIVATE)
+		/**
+		 * Field to sort collection by.
+		 */
 		public final String sortBy;
 		@With(AccessLevel.PRIVATE)
+		/**
+		 * Sort direction (ascending or descending). eg. sortDir=asc
+		 */
 		public final String sortDirection;
 
 		/**

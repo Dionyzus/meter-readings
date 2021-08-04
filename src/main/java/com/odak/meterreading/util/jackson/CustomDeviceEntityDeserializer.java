@@ -8,6 +8,11 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.odak.meterreading.entity.DeviceEntity;
 
+/**
+ * Deserializer required to deserialize device entity in many to one association.
+ * @author ivano
+ *
+ */
 public class CustomDeviceEntityDeserializer extends JsonDeserializer<DeviceEntity> {
 	@Override
 	public DeviceEntity deserialize(JsonParser jsonParser, DeserializationContext deserializationContext)

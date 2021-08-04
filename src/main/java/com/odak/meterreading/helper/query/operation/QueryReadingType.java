@@ -1,5 +1,11 @@
 package com.odak.meterreading.helper.query.operation;
 
+/**
+ * Available query operation types.
+ * 
+ * @author ivano
+ *
+ */
 public enum QueryReadingType {
 
 	AGGREGATED("aggr"), YEARLY("yearly"), MONTHLY("monthly");

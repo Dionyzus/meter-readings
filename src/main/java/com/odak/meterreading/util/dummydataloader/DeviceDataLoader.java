@@ -16,6 +16,12 @@ public class DeviceDataLoader {
 
 	private static final String DATA_SOURCE = "static/devices.json";
 
+	/**
+	 * Loads initial device data.
+	 *
+	 * @param deviceRepository - repository handling data.
+	 * @return {@link CommandLineRunner}.
+	 */
 	@Bean
 	public CommandLineRunner loadDeviceData(DeviceRepository deviceRepository) {
 
@@ -24,8 +30,8 @@ public class DeviceDataLoader {
 		List<DeviceEntity> deviceCollection = Deserialization.deserializeToList(resource, DeviceEntity.class);
 
 		return (args) -> {
-			//To initialize db with some data
-			//deviceRepository.saveAll(deviceCollection);
+			// To initialize db with some data
+//			 deviceRepository.saveAll(deviceCollection);
 		};
 	}
 }

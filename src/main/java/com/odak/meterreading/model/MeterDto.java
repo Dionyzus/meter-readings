@@ -13,11 +13,20 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+/**
+ * Data transfer object containing data to add new meter reading entry.
+ * 
+ * @author ivano
+ *
+ */
 @Data
 @AllArgsConstructor
 @JsonInclude(Include.NON_NULL)
 public class MeterDto {
 
+	@JsonProperty("device_id")
+	@NotNull(message = "Device id is required.")
+	private Long deviceId;
 	@JsonProperty("year")
 	@NotNull(message = "Year value is required.")
 	private String year;
@@ -28,6 +37,13 @@ public class MeterDto {
 	@NotNull(message = "The reading value is required.")
 	private Double readingValue;
 
+	/**
+	 * Converts provided year and month value to local date format. Usage: eg. 01
+	 * for month and 2021 for year.
+	 * 
+	 * @return {@link LocalDate} instance, throws exception otherwise.
+	 * @throws DateTimeParseException - if parsing of provided year and month fails.
+	 */
 	public LocalDate convertToLocalDate() throws DateTimeParseException {
 
 		StringBuilder date = new StringBuilder("01");

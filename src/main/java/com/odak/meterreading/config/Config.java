@@ -7,11 +7,17 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.odak.meterreading.repository.client.ClientRepository;
 import com.odak.meterreading.repository.device.DeviceRepository;
-import com.odak.meterreading.repository.meter.MeterRepository;
+import com.odak.meterreading.repository.meter.MeterReadingRepository;
 import com.odak.meterreading.service.ClientService;
 import com.odak.meterreading.service.DeviceService;
-import com.odak.meterreading.service.MeterService;
+import com.odak.meterreading.service.MeterReadingService;
 
+/**
+ * Configuration class where necessary beans are added.
+ *
+ * @author ivano
+ *
+ */
 @Configuration
 @EnableJpaRepositories(basePackages = "com.odak.meterreading.repository")
 public class Config {
@@ -22,8 +28,8 @@ public class Config {
 	}
 
 	@Bean
-	public MeterService meterService(MeterRepository meterRepository) {
-		return new MeterService(meterRepository);
+	public MeterReadingService meterReadingService(MeterReadingRepository meterReadingRepository, DeviceService deviceService) {
+		return new MeterReadingService(meterReadingRepository, deviceService);
 	}
 
 	@Bean

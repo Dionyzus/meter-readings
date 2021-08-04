@@ -7,6 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Api validation error holder.
+ * @author ivano
+ *
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor

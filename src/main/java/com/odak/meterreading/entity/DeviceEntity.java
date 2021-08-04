@@ -18,6 +18,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entity describing device.
+ * @author ivano
+ *
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,8 +37,8 @@ public class DeviceEntity {
 	private Long id;
 
 	@ElementCollection
-	@JsonProperty("meter_collection")
+	@JsonProperty("meter_reading_collection")
 	@OneToMany(mappedBy="device")
 	@JsonIgnoreProperties("device")
-	private List<MeterEntity> meterCollection;
+	private List<MeterReadingEntity> meterReadingCollection;
 }

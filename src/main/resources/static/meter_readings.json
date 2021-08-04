@@ -1,16 +1,16 @@
 [
 	{
-		"device": 138,
+		"device": 1,
 		"reading_value": 50.5,
 		"reading_time": "01-06-2021"
 	},
 	{
-		"device": 138,
+		"device": 1,
 		"reading_value": 40,
 		"reading_time": "01-07-2021"
 	},
 	{
-		"device": 138,
+		"device": 1,
 		"reading_value": "105.5",
 		"reading_time": "01-08-2021"
 	}

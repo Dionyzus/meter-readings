@@ -14,6 +14,12 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.Data;
 
+/**
+ * Data class defining API error description.
+ * 
+ * @author ivano
+ *
+ */
 @Data
 @JsonInclude(Include.NON_NULL)
 public class ApiError {
@@ -30,29 +36,63 @@ public class ApiError {
 		timestamp = LocalDateTime.now();
 	}
 
+	/**
+	 * Instantiates new {@link ApiError} with provided HTTP status.
+	 * 
+	 * @param status - {@link HttpStatus}.
+	 */
 	public ApiError(HttpStatus status) {
 		this();
 		this.status = status;
 	}
 
+	/**
+	 * Instantiates new {@link ApiError} with provided HTTP status and exception.
+	 * 
+	 * @param status - {@link HttpStatus}.
+	 * @param ex     - {@link Throwable} instance.
+	 */
 	public ApiError(HttpStatus status, Throwable ex) {
 		this();
 		this.status = status;
 		this.message = "Unexpected error";
 	}
 
+	/**
+	 * Instantiates new {@link ApiError} with provided HTTP status and exception.
+	 *
+	 * @param status  - {@link HttpStatus}.
+	 * @param message - additional message value.
+	 * @param ex      - {@link Throwable} instance.
+	 */
 	public ApiError(HttpStatus status, String message, Throwable ex) {
 		this();
 		this.status = status;
 		this.message = message;
 	}
 
+	/**
+	 * Instantiates new {@link ApiError} with provided HTTP status, exception
+	 * message and list of errors.
+	 * 
+	 * @param status-          {@link HttpStatus}.
+	 * @param localizedMessage - exception message value.
+	 * @param errors           - list of errors.
+	 */
 	public ApiError(HttpStatus status, String localizedMessage, List<String> errors) {
 		this.status = status;
 		this.localizedMessage = localizedMessage;
 		this.errors = errors;
 	}
 
+	/**
+	 * Instantiates new {@link ApiError} with provided HTTP status, exception
+	 * message and custom error message.
+	 * 
+	 * @param status-          {@link HttpStatus}.
+	 * @param localizedMessage - exception message value.
+	 * @param message          - error message.
+	 */
 	public ApiError(HttpStatus status, String localizedMessage, String message) {
 		this.status = status;
 		this.localizedMessage = localizedMessage;
@@ -66,10 +106,20 @@ public class ApiError {
 		validationErrors.add(error);
 	}
 
+	/**
+	 * Adds to global errors list.
+	 *
+	 * @param globalErrors - list containing {@link ObjectError}.
+	 */
 	public void addValidationError(List<ObjectError> globalErrors) {
 		globalErrors.forEach(this::addValidationError);
 	}
 
+	/**
+	 * Adds to field errors list.
+	 *
+	 * @param fieldErrors - list containing {@link FieldError}.
+	 */
 	public void addValidationErrors(List<FieldError> fieldErrors) {
 		fieldErrors.forEach(this::addValidationError);
 	}

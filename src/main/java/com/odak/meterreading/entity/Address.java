@@ -11,6 +11,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Class containing full address information.
+ *
+ * @author ivano
+ *
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
