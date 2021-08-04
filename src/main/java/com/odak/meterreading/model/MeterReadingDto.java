@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Data transfer object containing data to add new meter reading entry.
@@ -21,8 +22,9 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @JsonInclude(Include.NON_NULL)
-public class MeterDto {
+public class MeterReadingDto {
 
 	@JsonProperty("device_id")
 	@NotNull(message = "Device id is required.")

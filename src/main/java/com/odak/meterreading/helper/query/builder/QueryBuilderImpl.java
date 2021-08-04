@@ -18,7 +18,7 @@ import lombok.With;
 public class QueryBuilderImpl implements QueryBuilder {
 
 	@With(AccessLevel.PRIVATE)
-	private final QueryConfiguration queryConfiguration;
+	public final QueryConfiguration queryConfiguration;
 
 	public QueryBuilderImpl() {
 		this.queryConfiguration = QueryConfiguration.of();

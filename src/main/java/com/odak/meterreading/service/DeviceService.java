@@ -49,7 +49,7 @@ public class DeviceService {
 		return device.getMeterReadingCollection();
 	}
 
-	public List<DeviceEntity> getDeviceCollection() {
+	public List<DeviceEntity> findAll() {
 		return deviceRepository.findAll();
 	}
 }

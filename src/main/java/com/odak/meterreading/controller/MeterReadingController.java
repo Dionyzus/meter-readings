@@ -19,7 +19,7 @@ import com.odak.meterreading.entity.MeterReadingEntity;
 import com.odak.meterreading.exception.BadRequestException;
 import com.odak.meterreading.exception.ResourceNotFoundException;
 import com.odak.meterreading.helper.query.builder.QueryBuilderImpl.QueryConfiguration;
-import com.odak.meterreading.model.MeterDto;
+import com.odak.meterreading.model.MeterReadingDto;
 import com.odak.meterreading.service.MeterReadingService;
 import com.odak.meterreading.util.string.StringUtil;
 
@@ -44,14 +44,14 @@ public class MeterReadingController {
 	/**
 	 * Creates new meter reading entry for device.
 	 * 
-	 * @param meterReadingDetails - {@link MeterDto} JSON containing required
+	 * @param meterReadingDetails - {@link MeterReadingDto} JSON containing required
 	 *                            information for new meter-reading.
 	 * @return {@link ResponseEntity} JSON containing added reading for the device.
 	 */
 	@RequestMapping(value = "/meter-readings", method = RequestMethod.POST, produces = {
 			"application/json" }, consumes = "application/json")
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<MeterReadingEntity> addMeterReading(@Validated @RequestBody MeterDto meterReadingDetails) {
+	public ResponseEntity<MeterReadingEntity> addMeterReading(@Validated @RequestBody MeterReadingDto meterReadingDetails) {
 
 		MeterReadingEntity meterReadingEntity = meterReadingService.create(meterReadingDetails);
 
@@ -78,7 +78,7 @@ public class MeterReadingController {
 
 		QueryConfiguration query = meterReadingService.buildQuery(queryParams);
 
-		if (!StringUtil.isNullOrEmpty(query.type)) {
+		if (query != null && !StringUtil.isNullOrEmpty(query.type)) {
 			return ResponseEntity.ok(meterReadingService.query(query));
 		}
 		return ResponseEntity.ok(meterReadingService.findAll(query));
@@ -117,7 +117,7 @@ public class MeterReadingController {
 			"application/json" }, consumes = "application/json")
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ResponseEntity<MeterReadingEntity> updateMeterReading(@PathVariable(value = "id") Long meterEntityId,
-			@RequestBody MeterDto meterEntityDetails) throws ResourceNotFoundException {
+			@RequestBody MeterReadingDto meterEntityDetails) throws ResourceNotFoundException {
 
 		MeterReadingEntity meterReadingEntity = meterReadingService.update(meterEntityId, meterEntityDetails);
 

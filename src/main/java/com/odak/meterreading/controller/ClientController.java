@@ -58,7 +58,7 @@ public class ClientController {
 	 *         entries.
 	 */
 	@RequestMapping(value = "/clients", method = RequestMethod.GET, produces = { "application/json" })
-	public ResponseEntity<List<ClientEntity>> getMeterReadings() {
+	public ResponseEntity<List<ClientEntity>> getClients() {
 
 		return ResponseEntity.ok(clientService.findAll());
 	}

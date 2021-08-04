@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.odak.meterreading.entity.DeviceEntity;
 import com.odak.meterreading.entity.MeterReadingEntity;
+import com.odak.meterreading.exception.ResourceNotFoundException;
 import com.odak.meterreading.service.DeviceService;
 
 /**
@@ -41,7 +42,26 @@ public class DeviceController {
 	 */
 	@RequestMapping(value = "/devices", method = RequestMethod.GET, produces = { "application/json" })
 	public ResponseEntity<List<DeviceEntity>> getDevices() {
-		return ResponseEntity.ok(deviceService.getDeviceCollection());
+		return ResponseEntity.ok(deviceService.findAll());
+	}
+
+	/**
+	 * Gets device by id.
+	 * 
+	 * @param deviceId - device id to query collection with.
+	 * @return {@link DeviceEntity} matching provided id, throws exception
+	 *         otherwise.
+	 * @throws ResourceNotFoundException - exception if device with provided id does
+	 *                                   not exist.
+	 */
+	@RequestMapping(value = "/devices/{id}", method = RequestMethod.GET, produces = { "application/json" })
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ResponseEntity<DeviceEntity> getDeviceById(@PathVariable(value = "id") Long deviceId)
+			throws ResourceNotFoundException {
+
+		DeviceEntity deviceEntity = deviceService.getDeviceById(deviceId);
+
+		return ResponseEntity.ok(deviceEntity);
 	}
 
 	/**

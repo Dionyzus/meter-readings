@@ -19,7 +19,7 @@ import com.odak.meterreading.helper.query.builder.QueryBuilderImpl;
 import com.odak.meterreading.helper.query.builder.QueryBuilderImpl.QueryConfiguration;
 import com.odak.meterreading.helper.query.operation.MeterReadingOperation;
 import com.odak.meterreading.helper.query.operation.MeterReadingOperationFactory;
-import com.odak.meterreading.model.MeterDto;
+import com.odak.meterreading.model.MeterReadingDto;
 import com.odak.meterreading.repository.meter.MeterReadingRepository;
 import com.odak.meterreading.repository.meter.QueryResult;
 import com.odak.meterreading.util.string.StringUtil;
@@ -50,12 +50,12 @@ public class MeterReadingService {
 	/**
 	 * Adds new reading to device.
 	 *
-	 * @param meterDto - {@link MeterDto} containing data for new collection entry.
+	 * @param meterReadingDto - {@link MeterReadingDto} containing data for new collection entry.
 	 * @return {@link MeterReadingEntity} if operation was successful.
 	 */
-	public MeterReadingEntity create(MeterDto meterDto) {
+	public MeterReadingEntity create(MeterReadingDto meterReadingDto) {
 
-		MeterReadingEntity meterReadingEntity = convertToEntity(meterDto);
+		MeterReadingEntity meterReadingEntity = convertToEntity(meterReadingDto);
 
 		validateEntry(meterReadingEntity);
 
@@ -65,22 +65,22 @@ public class MeterReadingService {
 	/**
 	 * Converts from data transfer object to {@link MeterReadingEntity} instance.
 	 * 
-	 * @param meterDto - {@link MeterDto} instance.
+	 * @param meterReadingDto - {@link MeterReadingDto} instance.
 	 * @return {@link MeterReadingEntity} instance if operation was successful,
 	 *         throws exception otherwise.
 	 */
-	private MeterReadingEntity convertToEntity(MeterDto meterDto) {
+	public MeterReadingEntity convertToEntity(MeterReadingDto meterReadingDto) {
 		ModelMapper modelMapper = new ModelMapper();
 
-		MeterReadingEntity meterReadingEntity = modelMapper.map(meterDto, MeterReadingEntity.class);
+		MeterReadingEntity meterReadingEntity = modelMapper.map(meterReadingDto, MeterReadingEntity.class);
 
-		if (meterDto.getDeviceId() != null) {
-			DeviceEntity device = deviceService.getDeviceById(meterDto.getDeviceId());
+		if (meterReadingDto.getDeviceId() != null) {
+			DeviceEntity device = deviceService.getDeviceById(meterReadingDto.getDeviceId());
 			meterReadingEntity.setDevice(device);
 		}
 
 		try {
-			meterReadingEntity.setReadingTime(meterDto.convertToLocalDate());
+			meterReadingEntity.setReadingTime(meterReadingDto.convertToLocalDate());
 		} catch (DateTimeParseException exception) {
 			throw new BadRequestException(
 					"Provided data is not valid, missing year or month. Usage: eg. year: 2021, month: 07, reading_value: 50.5");
@@ -174,11 +174,11 @@ public class MeterReadingService {
 	 * Updates meter reading collection entry.
 	 * 
 	 * @param meterEntityId       - meter reading id value of entry to be updated.
-	 * @param meterReadingDetails - {@link MeterDto} updated entry details.
+	 * @param meterReadingDetails - {@link MeterReadingDto} updated entry details.
 	 * @return {@link MeterReadingEntity} instance if operation was successful,
 	 *         throws {@link ResourceNotFoundException} exception otherwise.
 	 */
-	public MeterReadingEntity update(Long meterEntityId, MeterDto meterReadingDetails) {
+	public MeterReadingEntity update(Long meterEntityId, MeterReadingDto meterReadingDetails) {
 		MeterReadingEntity meterReadingEntity = meterReadingRepository.findById(meterEntityId)
 				.orElseThrow(() -> new ResourceNotFoundException(EXCEPTION_MESSAGE + meterEntityId));
 
