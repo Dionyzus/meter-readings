@@ -23,6 +23,13 @@ import com.odak.meterreading.model.MeterReadingDto;
 import com.odak.meterreading.service.MeterReadingService;
 import com.odak.meterreading.util.string.StringUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 /**
  * Meter reading controller working with {@link MeterReadingEntity}. Contains
  * end-points available to work with meter data.
@@ -41,6 +48,10 @@ public class MeterReadingController {
 		this.meterReadingService = meterReadingService;
 	}
 
+	@Operation(summary = "Create new meter reading entry")
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Meter reading entry created", content = {
+			@Content(mediaType = "application/json", schema = @Schema(implementation = MeterReadingEntity.class)) }),
+			@ApiResponse(responseCode = "404", description = "Bad request", content = @Content) })
 	/**
 	 * Creates new meter reading entry for device.
 	 * 
@@ -51,12 +62,19 @@ public class MeterReadingController {
 	@RequestMapping(value = "/meter-readings", method = RequestMethod.POST, produces = {
 			"application/json" }, consumes = "application/json")
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public ResponseEntity<MeterReadingEntity> addMeterReading(@Validated @RequestBody MeterReadingDto meterReadingDetails) {
+	public ResponseEntity<MeterReadingEntity> addMeterReading(
+			@Validated @RequestBody MeterReadingDto meterReadingDetails) {
 
 		MeterReadingEntity meterReadingEntity = meterReadingService.create(meterReadingDetails);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(meterReadingEntity);
 	}
+
+	@Operation(summary = "Get all meter readings")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "meter reading collection collection", content = {
+					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MeterReadingEntity.class))) }),
+			@ApiResponse(responseCode = "404", description = "Bad query parameters provided", content = @Content) })
 
 	/**
 	 * Gets meter-readings for device. If no query parameters are present returns
@@ -84,6 +102,9 @@ public class MeterReadingController {
 		return ResponseEntity.ok(meterReadingService.findAll(query));
 	}
 
+	@Operation(summary = "Get meter readings by id")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "meter reading collection", content = {
+			@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MeterReadingEntity.class))) }), })
 	/**
 	 * Gets meter reading entry.
 	 *
@@ -103,6 +124,11 @@ public class MeterReadingController {
 		return ResponseEntity.ok(meterReadingEntity);
 	}
 
+	@Operation(summary = "Update meter reading entry")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "meter reading entry updated successfuly", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = MeterReadingEntity.class)) }),
+			@ApiResponse(responseCode = "404", description = "No meter reading with provided id exists", content = @Content) })
 	/**
 	 * Updates meter reading entry.
 	 * 
@@ -124,6 +150,9 @@ public class MeterReadingController {
 		return ResponseEntity.ok(meterReadingEntity);
 	}
 
+	@Operation(summary = "Delete meter reading enty")
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "meter reading entry deleted"),
+			@ApiResponse(responseCode = "404", description = "No meter reading with provided id exists", content = @Content) })
 	/**
 	 * Deletes meter reading entry.
 	 * 

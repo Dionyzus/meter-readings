@@ -16,6 +16,13 @@ import com.odak.meterreading.entity.MeterReadingEntity;
 import com.odak.meterreading.exception.ResourceNotFoundException;
 import com.odak.meterreading.service.DeviceService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 /**
  * Device controller working with {@link DeviceEntity}. Contains end-points
  * available to work with device data.
@@ -34,6 +41,9 @@ public class DeviceController {
 		this.deviceService = deviceService;
 	}
 
+	@Operation(summary = "Get all devices")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "device collection", content = {
+			@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = DeviceEntity.class))) }), })
 	/**
 	 * Gets {@link DeviceEntity} collection.
 	 * 
@@ -45,6 +55,12 @@ public class DeviceController {
 		return ResponseEntity.ok(deviceService.findAll());
 	}
 
+	@Operation(summary = "Get device by device id")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "device entry", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = DeviceEntity.class)) }),
+			@ApiResponse(responseCode = "400", description = "device id is required", content = @Content),
+			@ApiResponse(responseCode = "404", description = "device with provided id not found", content = @Content) })
 	/**
 	 * Gets device by id.
 	 * 
@@ -64,6 +80,12 @@ public class DeviceController {
 		return ResponseEntity.ok(deviceEntity);
 	}
 
+	@Operation(summary = "Get meter readings associated with device")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "meter reading collection for device", content = {
+					@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MeterReadingEntity.class))) }),
+			@ApiResponse(responseCode = "400", description = "device id is required", content = @Content),
+			@ApiResponse(responseCode = "404", description = "device with provided id not found", content = @Content) })
 	/**
 	 * Gets {@link MeterReadingEntity} collection.
 	 *

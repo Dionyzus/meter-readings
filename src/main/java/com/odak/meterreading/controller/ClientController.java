@@ -15,6 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.odak.meterreading.entity.ClientEntity;
 import com.odak.meterreading.service.ClientService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
 /**
  * Client controller working with {@link ClientEntity}. Contains end-points
  * available to work with client data.
@@ -33,6 +40,11 @@ public class ClientController {
 		this.clientService = clientService;
 	}
 
+	@Operation(summary = "Create new client entry")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "201", description = "Client entry created", content = {
+					@Content(mediaType = "application/json", schema = @Schema(implementation = ClientEntity.class)) }),
+			@ApiResponse(responseCode = "404", description = "Bad request", content = @Content) })
 	/**
 	 * Creates new client entry.
 	 *
@@ -51,6 +63,9 @@ public class ClientController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(clientEntity);
 	}
 
+	@Operation(summary = "Get all clients")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "client collection", content = {
+			@Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ClientEntity.class))) }), })
 	/**
 	 * Gets {@link ClientEntity} collection.
 	 *
