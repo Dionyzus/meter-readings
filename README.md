@@ -39,6 +39,7 @@ Notice, can't provide query parameteres when required is set to false. Use postm
 This should create electric_device database, but if any container does not run, make sure you have electric_device database available (Can through MySQL workbench).
 Set of docker commands to run in terminal. (Make sure docker is running).
 
+```shell
 * docker pull iodak/meter-reading:v3
 
 * docker run -d -p 3306:3306 --name localhost -e MYSQL_ROOT_PASSWORD=iodak -e MYSQL_DATABASE=electric_device -d mysql
@@ -47,6 +48,7 @@ Set of docker commands to run in terminal. (Make sure docker is running).
 * docker run -d --link localhost flyway/flyway -url=jdbc:mysql://localhost:3306/electric_device -user=root -password=iodak info
 
 * docker run -d --link localhost -p 8080:8080 --name meter-reading --link localhost iodak/meter-reading:v3
+```
 
 After executing set of commands make sure images are available and containers are running without errors.
 
@@ -56,7 +58,7 @@ Either use swagger link (http://localhost:8080/meter-reading.html) to see availa
 If using postman and for query parameters testing. Here is set of endpoints and rest calls examples below:
 
 ## Meter readings
-*View readings for month in year. Query params must be listed without spaces, year, month value do not matter.
+* View readings for month in year. Query params must be listed without spaces, year, month value do not matter.
   * (http://localhost:8080/api/v1/meter-readings?type=monthly&value=7,2021) - get mapping
 
 * View monthly reading for a provided year.
