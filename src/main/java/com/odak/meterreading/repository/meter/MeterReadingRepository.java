@@ -37,7 +37,7 @@ public interface MeterReadingRepository extends JpaRepository<MeterReadingEntity
 	 * @return {@link Page} containing aggregated meter reading value for provided
 	 *         year.
 	 */
-	@Query(value = "SELECT YEAR(reading_time) as \"Year\", SUM(reading_value) as \"Total\" FROM electric_device.meter WHERE YEAR(reading_time)= :year", nativeQuery = true)
+	@Query(value = "SELECT YEAR(reading_time) as \"Year\", SUM(reading_value) as \"Total\" FROM electric_device.meter WHERE YEAR(reading_time)= :year group by year", nativeQuery = true)
 	Page<QueryResult> getAggregatedReadingForYear(@Param("year") Integer year, Pageable pageable);
 
 	/**
@@ -48,7 +48,7 @@ public interface MeterReadingRepository extends JpaRepository<MeterReadingEntity
 	 * @return {@link Page} containing list of meter reading values for provided
 	 *         year.
 	 */
-	@Query(value = "select year(reading_time) as \"Year\", group_concat( concat(MONTHNAME((reading_time)), '='), reading_value separator ', ') as \"Readings\" from electric_device.meter where year(reading_time)= :year", nativeQuery = true)
+	@Query(value = "select year(reading_time) as \"Year\", group_concat( concat(MONTHNAME((reading_time)), '='), reading_value separator ', ') as \"Readings\" from electric_device.meter where year(reading_time)= :year group by year", nativeQuery = true)
 	Page<QueryResult> getReadingForYear(@Param("year") Integer year, Pageable pageable);
 
 	/**
@@ -59,7 +59,7 @@ public interface MeterReadingRepository extends JpaRepository<MeterReadingEntity
 	 * @param pageable - {@link Pageable} instance.
 	 * @return {@link Page} containing meter reading for provided year and month.
 	 */
-	@Query(value = "SELECT YEAR(reading_time) as \"Year\", MONTHNAME(reading_time) as \"Month\", SUM(reading_value) as \"Reading\" FROM electric_device.meter where YEAR(reading_time)= :year and MONTH(reading_time)= :month", nativeQuery = true)
+	@Query(value = "SELECT YEAR(reading_time) as \"Year\", MONTHNAME(reading_time) as \"Month\", SUM(reading_value) as \"Reading\" FROM electric_device.meter where YEAR(reading_time)= :year and MONTH(reading_time)= :month group by id", nativeQuery = true)
 	Page<QueryResult> getReadingForMonthInYear(@Param("year") Integer year, @Param("month") Integer month,
 			Pageable pageable);
 
