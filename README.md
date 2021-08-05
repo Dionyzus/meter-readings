@@ -106,5 +106,5 @@ Get mapping - http://localhost:8080/api/v1/clients returns clients.
 
 ## Device
 Get all devices: http://localhost:8080/api/v1/devices
-Get device by id: http://localhost:8080/api/v1/devices/1
-Get meter readings for device: http://localhost:8080/api/v1/devices/1/meter-readings
+Get device by id: http://localhost:8080/api/v1/devices/{id}
+Get meter readings for device: http://localhost:8080/api/v1/devices/{id}/meter-readings
