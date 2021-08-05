@@ -13,11 +13,11 @@ git clone https://github.com/Dionyzus/meter-readings.git
 ## MySQL
 Make sure that you have MySQL installed, run MySQL and create electric_device database. MySQL shell (https://www.inmotionhosting.com/support/server/databases/create-a-mysql-database/) or MySQL workbench and create new schema there. Make sure that 3306 port is not in use by some other process already.
 
-**Make sure that you are connected to mysql instance via 3306 port locally.
-**If running with docker no just make sure mysql shell is running.
-**Make sure that you have root user connection via 3306 and to provide proper password value to establish connection
-**Edit application.properties file to match your mysql instance.
-**If connection is failing make sure MySQL service is running. Search -> services -> find MySQL service and start it.
+*Make sure that you are connected to mysql instance via 3306 port locally.
+*If running with docker no just make sure mysql shell is running.
+*Make sure that you have root user connection via 3306 and to provide proper password value to establish connection
+*Edit application.properties file to match your mysql instance.
+*If connection is failing make sure MySQL service is running. Search -> services -> find MySQL service and start it.
 
 ## Spring boot project via IDE or maven plugin
 Unzip the project and save it at desired location.
