@@ -12,9 +12,9 @@ git clone https://github.com/Dionyzus/meter-readings.git
 
 ## MySQL
 Make sure that you have MySQL installed, run MySQL and create electric_device database. MySQL shell (https://www.inmotionhosting.com/support/server/databases/create-a-mysql-database/) or MySQL workbench and create new schema there. Make sure that 3306 port is not in use by some other process already.
-Make sure that you are connected to mysql instance via 3306 port locally.
 
-If running with docker no just make sure mysql shell is running.
+**Make sure that you are connected to mysql instance via 3306 port locally.
+**If running with docker no just make sure mysql shell is running.
 
 ## Spring boot project via IDE or maven plugin
 Unzip the project and save it at desired location.
@@ -22,7 +22,7 @@ Unzip the project and save it at desired location.
 There are several ways to run a Spring Boot application on your local machine. 
 Open IDE and import/open project (from location where you've unzipped it).
 
-When project is added automatic build should start. If not, make sure to do maven update and to build project!!
+**When project is added automatic build should start. If not, make sure to do maven update and to build project!!
 
 Execute the `main` method in the `com.odak.meterreading.MeterreadingApplication` class from your IDE to run it. (Make sure MySQL is running).
 
@@ -37,17 +37,17 @@ Notice, can't provide query parameteres when required is set to false. Use postm
 
 ## Docker
 This should create electric_device database, but if any container does not run, make sure you have electric_device database available (Can through MySQL workbench).
-Set of docker commands to run in terminal. (Make sure docker is running).
+**Set of docker commands to run in terminal. (Make sure docker is running).
 
 ```shell
-* docker pull iodak/meter-reading:v3
+docker pull iodak/meter-reading:v3
 
-* docker run -d -p 3306:3306 --name localhost -e MYSQL_ROOT_PASSWORD=iodak -e MYSQL_DATABASE=electric_device -d mysql
+docker run -d -p 3306:3306 --name localhost -e MYSQL_ROOT_PASSWORD=iodak -e MYSQL_DATABASE=electric_device -d mysql
 
-* docker pull flyway/flyway
-* docker run -d --link localhost flyway/flyway -url=jdbc:mysql://localhost:3306/electric_device -user=root -password=iodak info
+docker pull flyway/flyway
+docker run -d --link localhost flyway/flyway -url=jdbc:mysql://localhost:3306/electric_device -user=root -password=iodak info
 
-* docker run -d --link localhost -p 8080:8080 --name meter-reading --link localhost iodak/meter-reading:v3
+docker run -d --link localhost -p 8080:8080 --name meter-reading --link localhost iodak/meter-reading:v3
 ```
 
 After executing set of commands make sure images are available and containers are running without errors.
@@ -73,17 +73,18 @@ If using postman and for query parameters testing. Here is set of endpoints and 
 * Get/Update/Delete by id
   * (http://localhost:8080/api/v1/meter-readings/{id}) - make sure correct mapping is used.
 
-* Update body example:
+Update body example:
 {
   "year": "2021",
   "month": "11",
   "reading_value": 5
 }
 
-* Make sure value for month does not exist already, otherwise request returns error
+Make sure value for month does not exist already, otherwise request returns error
 
 * Post mapping (http://localhost:8080/api/v1/meter-readings)
-* {
+
+ {
   "device_id": 1,
   "year": "2021",
   "month": "05",
@@ -94,7 +95,7 @@ Month if single digit must be provided with zero prefix: 05, not 5.
 
 ## Client
 * Add new client entry: (http://localhost:8080/api/v1/clients) - post mapping
-Example body (device must not be in use, and address must be unique, returns error if criteria is not matched)
+* Example body (device must not be in use, and address must be unique, returns error if criteria is not matched)
 {
   "id": 0,
   "full_name": "New Client",
