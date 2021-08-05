@@ -15,16 +15,20 @@ Make sure that you have MySQL installed, run MySQL and create electric_device da
 
 **Make sure that you are connected to mysql instance via 3306 port locally.
 **If running with docker no just make sure mysql shell is running.
+**Make sure that you have root user connection via 3306 and to provide proper password value to establish connection
+**Edit application.properties file to match your mysql instance.
+**If connection is failing make sure MySQL service is running. Search -> services -> find MySQL service and start it.
 
 ## Spring boot project via IDE or maven plugin
 Unzip the project and save it at desired location.
 
+Project was created and tested in spring tools suite IDE. (https://spring.io/tools).
 There are several ways to run a Spring Boot application on your local machine. 
 Open IDE and import/open project (from location where you've unzipped it).
 
 **When project is added automatic build should start. If not, make sure to do maven update and to build project!!
 
-Execute the `main` method in the `com.odak.meterreading.MeterreadingApplication` class from your IDE to run it. (Make sure MySQL is running).
+Execute the `main` method in the `com.odak.meterreading.MeterreadingApplication` class from your IDE to run it as spring boot application. (Make sure MySQL is running).
 
 Alternatively you can use the [Spring Boot Maven plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html) like so:
 
