@@ -1,6 +1,7 @@
 package com.odak.meterreading.repository.meter;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -59,5 +60,14 @@ public interface MeterReadingRepository extends JpaRepository<MeterReadingEntity
 	 * @return {@link Page} containing meter reading for provided year and month.
 	 */
 	@Query(value = "SELECT YEAR(reading_time) as \"Year\", MONTHNAME(reading_time) as \"Month\", SUM(reading_value) as \"Reading\" FROM electric_device.meter where YEAR(reading_time)= :year and MONTH(reading_time)= :month", nativeQuery = true)
-	Page<QueryResult> getReadingForMonthInYear(@Param("year") Integer year, @Param("month") Integer month, Pageable pageable);
+	Page<QueryResult> getReadingForMonthInYear(@Param("year") Integer year, @Param("month") Integer month,
+			Pageable pageable);
+
+	/**
+	 * Gets all meter readings for device.
+	 *
+	 * @param deviceId - device id to query collection with.
+	 * @return list containing {@link MeterReadingEntity} entries.
+	 */
+	List<MeterReadingEntity> findAllByDeviceId(Long deviceId);
 }

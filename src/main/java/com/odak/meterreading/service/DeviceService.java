@@ -1,9 +1,15 @@
 package com.odak.meterreading.service;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.Link;
 
+import com.odak.meterreading.controller.DeviceController;
 import com.odak.meterreading.entity.DeviceEntity;
 import com.odak.meterreading.entity.MeterReadingEntity;
 import com.odak.meterreading.exception.ResourceNotFoundException;
@@ -49,7 +55,36 @@ public class DeviceService {
 		return device.getMeterReadingCollection();
 	}
 
+	/**
+	 * Gets device entity collection as list.
+	 * 
+	 * @return list containing {@link DeviceEntity} entries.
+	 */
 	public List<DeviceEntity> findAll() {
 		return deviceRepository.findAll();
+	}
+
+	/**
+	 * Creates links for device entity.
+	 * 
+	 * @param devices - {@link DeviceEntity} collection
+	 * @return {@link CollectionModel} containing device entities with links
+	 *         associated with them.
+	 */
+	public CollectionModel<DeviceEntity> createLinksForDevices(List<DeviceEntity> devices) {
+		for (final DeviceEntity device : devices) {
+			Long deviceId = device.getId();
+			Link selfLink = linkTo(DeviceController.class).slash(deviceId).withSelfRel();
+			device.add(selfLink);
+			if (device.getMeterReadingCollection().size() > 0) {
+				final Link meterReadingsLink = linkTo(methodOn(DeviceController.class).getDeviceMeterReadings(deviceId))
+						.withRel("allMeterReadings");
+				device.add(meterReadingsLink);
+			}
+		}
+
+		Link link = linkTo(DeviceController.class).withSelfRel();
+		CollectionModel<DeviceEntity> result = CollectionModel.of(devices, link);
+		return result;
 	}
 }

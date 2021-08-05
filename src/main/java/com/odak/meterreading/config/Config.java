@@ -28,7 +28,8 @@ public class Config {
 	}
 
 	@Bean
-	public MeterReadingService meterReadingService(MeterReadingRepository meterReadingRepository, DeviceService deviceService) {
+	public MeterReadingService meterReadingService(MeterReadingRepository meterReadingRepository,
+			DeviceService deviceService) {
 		return new MeterReadingService(meterReadingRepository, deviceService);
 	}
 

@@ -2,6 +2,7 @@ package com.odak.meterreading.service;
 
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -50,7 +51,8 @@ public class MeterReadingService {
 	/**
 	 * Adds new reading to device.
 	 *
-	 * @param meterReadingDto - {@link MeterReadingDto} containing data for new collection entry.
+	 * @param meterReadingDto - {@link MeterReadingDto} containing data for new
+	 *                        collection entry.
 	 * @return {@link MeterReadingEntity} if operation was successful.
 	 */
 	public MeterReadingEntity create(MeterReadingDto meterReadingDto) {
@@ -158,6 +160,10 @@ public class MeterReadingService {
 		return meterReadingRepository.findAll(pageable);
 	}
 
+	public List<MeterReadingEntity> findAll() {
+		return meterReadingRepository.findAll();
+	}
+
 	/**
 	 * Gets meter reading entry.
 	 * 
@@ -218,6 +224,16 @@ public class MeterReadingService {
 				.orElseThrow(() -> new ResourceNotFoundException(EXCEPTION_MESSAGE + meterEntityId));
 
 		meterReadingRepository.delete(meterReadingEntity);
+	}
+
+	/**
+	 * Gets all meter readings for device.
+	 * 
+	 * @param deviceId - device id to query collection with.
+	 * @return list containing {@link MeterReadingEntity} entries.
+	 */
+	public List<MeterReadingEntity> getMeterReadingsByDeviceId(Long deviceId) {
+		return meterReadingRepository.findAllByDeviceId(deviceId);
 	}
 
 	/**

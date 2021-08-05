@@ -3,6 +3,9 @@ package com.odak.meterreading.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.config.EnableHypermediaSupport;
+import org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +34,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
  *
  */
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api/v1/devices")
+@EnableHypermediaSupport(type = HypermediaType.HAL)
 public class DeviceController {
 
 	private DeviceService deviceService;
@@ -50,9 +54,14 @@ public class DeviceController {
 	 * @return {@link ResponseEntity} - JSON response containing list of device
 	 *         entries.
 	 */
-	@RequestMapping(value = "/devices", method = RequestMethod.GET, produces = { "application/json" })
-	public ResponseEntity<List<DeviceEntity>> getDevices() {
-		return ResponseEntity.ok(deviceService.findAll());
+	@RequestMapping(value = "", method = RequestMethod.GET, produces = { "application/json" })
+	public ResponseEntity<CollectionModel<DeviceEntity>> getDevices() {
+		
+		List<DeviceEntity> devices = deviceService.findAll();
+
+		CollectionModel<DeviceEntity> result = deviceService.createLinksForDevices(devices);
+
+		return ResponseEntity.ok(result);
 	}
 
 	@Operation(summary = "Get device by device id")
@@ -70,7 +79,7 @@ public class DeviceController {
 	 * @throws ResourceNotFoundException - exception if device with provided id does
 	 *                                   not exist.
 	 */
-	@RequestMapping(value = "/devices/{id}", method = RequestMethod.GET, produces = { "application/json" })
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ResponseEntity<DeviceEntity> getDeviceById(@PathVariable(value = "id") Long deviceId)
 			throws ResourceNotFoundException {
@@ -94,8 +103,7 @@ public class DeviceController {
 	 *         readings for requested device entry if any matches provided id,
 	 *         throws exception otherwise.
 	 */
-	@RequestMapping(value = "/devices/{id}/meter-readings", method = RequestMethod.GET, produces = {
-			"application/json" })
+	@RequestMapping(value = "/{id}/meter-readings", method = RequestMethod.GET, produces = { "application/json" })
 	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ResponseEntity<List<MeterReadingEntity>> getDeviceMeterReadings(@PathVariable(value = "id") Long deviceId) {
 
